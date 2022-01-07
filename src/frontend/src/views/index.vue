@@ -30,16 +30,19 @@
 
               <div class="sheet__content dough">
                 <label
-                  v-for="d in pizza.dough"
+                  v-for="(d, key) in pizza.dough"
                   :key="d.id"
-                  :class="`dough__input dough__input--${d.type}`"
+                  :class="`dough__input dough__input--${getType(
+                    types.dough,
+                    d.id
+                  )}`"
                 >
                   <input
                     type="radio"
                     name="dought"
                     class="visually-hidden"
                     :value="d.type"
-                    :checked="d.checked"
+                    :checked="key === 0"
                   />
                   <b>{{ d.name }}</b>
                   <span>{{ d.description }}</span>
@@ -54,15 +57,18 @@
 
               <div class="sheet__content diameter">
                 <label
-                  v-for="s in pizza.sizes"
+                  v-for="(s, key) in pizza.sizes"
                   :key="s.id"
-                  :class="`diameter__input diameter__input--${s.size}`"
+                  :class="`diameter__input diameter__input--${getType(
+                    types.sizes,
+                    s.id
+                  )}`"
                 >
                   <input
                     type="radio"
                     name="diameter"
                     :value="s.size"
-                    :checked="s.checked"
+                    :checked="key === 1"
                     class="visually-hidden"
                   />
                   <span>{{ s.name }}</span>
@@ -82,15 +88,15 @@
                   <p>Основной соус:</p>
 
                   <label
-                    v-for="s in pizza.sauces"
+                    v-for="(s, key) in pizza.sauces"
                     :key="s.id"
                     class="radio ingredients__input"
                   >
                     <input
                       type="radio"
                       name="sauce"
-                      :value="s.type"
-                      :checked="s.checked"
+                      :value="getType(types.sauces, s.id)"
+                      :checked="key === 0"
                     />
                     <span>{{ s.name }}</span>
                   </label>
@@ -105,7 +111,12 @@
                       :key="i.id"
                       class="ingredients__item"
                     >
-                      <span :class="`filling filling--${i.type}`">
+                      <span
+                        :class="`filling filling--${getType(
+                          types.ingredients,
+                          i.id
+                        )}`"
+                      >
                         {{ i.name }}
                       </span>
 
@@ -170,6 +181,9 @@
 import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
+import { types } from "@/common/constants";
+import { getType } from "@/common/helpers";
+
 export default {
   name: "IndexHome",
   data: () => {
@@ -177,6 +191,8 @@ export default {
       misc,
       pizza,
       user,
+      types,
+      getType: getType,
     };
   },
 };
