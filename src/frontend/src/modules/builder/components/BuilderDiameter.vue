@@ -6,7 +6,7 @@
       :class="`diameter__input diameter__input--${size.type}`"
     >
       <RadioButton
-        :name="'diameter'"
+        name="diameter"
         :value="size.type"
         :checked="size.selected"
         @change="$emit('sizeChange', $event.target.value)"

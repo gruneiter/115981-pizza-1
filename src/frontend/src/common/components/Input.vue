@@ -28,6 +28,7 @@ export default {
     },
     placeholder: {
       type: String,
+      default: "",
     },
     name: {
       type: String,

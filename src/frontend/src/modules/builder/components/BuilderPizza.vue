@@ -1,12 +1,14 @@
 <template>
   <AppDrop class="pizza" :class="pizzaClassName" @drop="drop">
     <div class="pizza__wrapper">
-      <div
-        v-for="item in fillingList"
-        :key="item.id"
-        class="pizza__filling"
-        :class="fillingClassName(item.count, item.type)"
-      ></div>
+      <template v-for="item in fillingList">
+        <div
+          v-for="n in item.count"
+          :key="n"
+          class="pizza__filling"
+          :class="fillingClassName(n, item.type)"
+        ></div>
+      </template>
     </div>
   </AppDrop>
 </template>

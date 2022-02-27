@@ -7,6 +7,12 @@
 <script>
 export default {
   name: "AppDrop",
+  props: {
+    draggable: {
+      type: Boolean,
+      default: true,
+    },
+  },
   methods: {
     onDrop({ dataTransfer }) {
       if (!dataTransfer) return;

@@ -22,12 +22,10 @@ export default {
     arrow: {
       type: Boolean,
       default: false,
-      validator: (v) => typeof v === "boolean",
     },
     isDisabled: {
       type: Boolean,
       default: false,
-      validator: (d) => typeof d === "boolean",
     },
   },
   computed: {

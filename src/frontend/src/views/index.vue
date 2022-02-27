@@ -12,7 +12,7 @@
                 <BuilderDough
                   :list="dough.list"
                   class="sheet__content"
-                  @doughChange="dough.propertyChange($event)"
+                  @doughChange="propertyChange(dough, $event)"
                 />
               </div>
             </div>
@@ -23,7 +23,7 @@
                 <BuilderDiameter
                   :list="sizes.list"
                   class="sheet__content"
-                  @sizeChange="sizes.propertyChange($event)"
+                  @sizeChange="propertyChange(sizes, $event)"
                 />
               </div>
             </div>
@@ -35,7 +35,7 @@
                   :sauces="sauces.list"
                   :ingredients="ingredients"
                   class="sheet__content"
-                  @sauceChange="sauces.propertyChange($event)"
+                  @sauceChange="propertyChange(sauces, $event)"
                   @ingredientChange="ingredientChange"
                 />
               </div>
@@ -78,7 +78,7 @@ import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
 import { types } from "@/common/constants";
-import { getType, Property } from "@/common/helpers";
+import { getType, createProperty, propertyChange } from "@/common/helpers";
 import AppLayout from "../layouts/AppLayout";
 import BuilderDough from "../modules/builder/components/BuilderDough";
 import BuilderDiameter from "../modules/builder/components/BuilderDiameter";
@@ -105,9 +105,9 @@ export default {
       i.count = i.count ? i.count : 0;
       i.type = types.ingredients[i.id];
     });
-    const dough = new Property(pizza.dough, types.dough);
-    const sauces = new Property(pizza.sauces, types.sauces);
-    const sizes = new Property(pizza.sizes, types.sizes, 1);
+    const dough = createProperty(pizza.dough, types.dough);
+    const sauces = createProperty(pizza.sauces, types.sauces);
+    const sizes = createProperty(pizza.sizes, types.sizes, 1);
 
     return {
       misc,
@@ -164,6 +164,7 @@ export default {
   },
   methods: {
     getType,
+    propertyChange,
 
     ingredientChange(count, name) {
       const item = this.ingredients.find((i) => i.id === name);
