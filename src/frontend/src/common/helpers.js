@@ -11,7 +11,8 @@ export const changeCount = (count) => {
 };
 
 export const createProperty = (list, types, selected) => {
-  const listWithTypes = list.forEach((item) => (item.type = types[item.id]));
+  const listWithTypes = list;
+  listWithTypes.forEach((item) => (item.type = types[item.id]));
   const selectIndex =
     selected && selected < listWithTypes.length && selected > 0 ? selected : 0;
   const selectedElem = listWithTypes[selectIndex];
