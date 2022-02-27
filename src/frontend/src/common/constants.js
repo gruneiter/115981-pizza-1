@@ -30,3 +30,6 @@ export const types = {
     3: "big",
   },
 };
+
+export const minIngredients = 0;
+export const maxIngredients = 3;
