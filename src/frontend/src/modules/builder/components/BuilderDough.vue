@@ -8,7 +8,7 @@
       <RadioButton
         :name="'dough'"
         :value="d.type"
-        :checked="d.selected"
+        :isChecked="d.selected"
         @change="$emit('doughChange', $event.target.value)"
       />
       <b>{{ d.name }}</b>

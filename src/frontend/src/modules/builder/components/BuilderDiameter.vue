@@ -8,7 +8,7 @@
       <RadioButton
         name="diameter"
         :value="size.type"
-        :checked="size.selected"
+        :isChecked="size.selected"
         @change="$emit('sizeChange', $event.target.value)"
       />
       <span>{{ size.name }}</span>

@@ -15,11 +15,10 @@ export const createProperty = (list, types, selected) => {
   listWithTypes.forEach((item) => (item.type = types[item.id]));
   const selectIndex =
     selected && selected < listWithTypes.length && selected > 0 ? selected : 0;
-  const selectedElem = listWithTypes[selectIndex];
-  selectedElem.selected = true;
+  listWithTypes[selectIndex].selected = true;
   return {
     list: listWithTypes,
-    selected: selectedElem,
+    selected: listWithTypes[selectIndex],
     selectIndex,
   };
 };
