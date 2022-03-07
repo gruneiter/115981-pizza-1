@@ -4,7 +4,6 @@
       <template v-for="item in fillingList">
         <div
           v-for="n in item.count"
-          :key="n"
           class="pizza__filling"
           :class="fillingClassName(n, item.type)"
         ></div>
