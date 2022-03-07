@@ -1,29 +1,35 @@
 <template>
   <div id="app">
-    <RouterView
-      @doughChange="propertyChange(dough, $event)"
-      @sizeChange="propertyChange(sizes, $event)"
-      @sauceChange="propertyChange(sauces, $event)"
-      @ingredientChange="ingredientChange"
-      @nameChange="nameChange"
-      :ingredients="ingredients"
-      :dough="dough"
-      :sauces="sauces"
-      :sizes="sizes"
-      :price="priceTotal"
-      :hasIngredients="hasIngredients"
-      :pizzaName="pizzaName"
-    />
+    <AppLayout :price="priceTotal">
+      <RouterView
+        @doughChange="propertyChange(dough, $event)"
+        @sizeChange="propertyChange(sizes, $event)"
+        @sauceChange="propertyChange(sauces, $event)"
+        @ingredientChange="ingredientChange"
+        @nameChange="nameChange"
+        :ingredients="ingredients"
+        :dough="dough"
+        :sauces="sauces"
+        :sizes="sizes"
+        :hasIngredients="hasIngredients"
+        :pizzaName="pizzaName"
+        :price="priceTotal"
+      />
+    </AppLayout>
   </div>
 </template>
 
 <script>
+import AppLayout from "./layouts/AppLayout";
 import pizza from "@/static/pizza.json";
 import { types } from "@/common/constants";
 import { propertyChange, createProperty } from "@/common/helpers";
 
 export default {
   name: "App",
+  components: {
+    AppLayout,
+  },
   data: () => {
     const ingredients = pizza.ingredients;
     ingredients.forEach((i) => {
@@ -39,7 +45,6 @@ export default {
       dough,
       sauces,
       sizes,
-      hasIngredients: false,
       pizzaName: "",
     };
   },
@@ -57,6 +62,9 @@ export default {
           sauce) *
         this.sizes.selected.multiplier
       );
+    },
+    hasIngredients() {
+      return !!this.ingredients.find((i) => i.count > 0);
     },
     order() {
       const { pizzaName, ingredients, priceTotal } = this;
@@ -89,8 +97,6 @@ export default {
     ingredientChange(count, name) {
       const item = this.ingredients.find((i) => i.id === name);
       if (item) item.count = count;
-      this.hasIngredients = !!this.ingredients.find((i) => i.count > 0);
-      console.log(this.hasIngredients, this.pizzaName);
     },
 
     nameChange(event) {

@@ -36,7 +36,7 @@ export default {
   computed: {
     layout() {
       const layout = this.$route.meta.layout || defaultLayout;
-      return () => import(`@/layouts/${layout}.vue`);
+      return () => import(`./${layout}.vue`);
     },
   },
 };

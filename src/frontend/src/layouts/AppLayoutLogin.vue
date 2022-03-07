@@ -7,11 +7,5 @@
 <script>
 export default {
   name: "AppLayoutLogin",
-  props: {
-    price: {
-      type: [Number, String],
-      default: 0,
-    },
-  },
 };
 </script>

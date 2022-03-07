@@ -1,15 +1,9 @@
 <template>
-  <AppLayout>
-    <h1>Вход</h1>
-  </AppLayout>
+  <h1>Вход</h1>
 </template>
 
 <script>
-import AppLayout from "../layouts/AppLayout";
 export default {
   name: "Login",
-  components: {
-    AppLayout,
-  },
 };
 </script>
