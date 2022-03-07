@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppLayout :price="priceTotal">
+    <AppLayout :price="price">
       <main class="content">
         <form action="#" method="post">
           <div class="content__wrapper">
@@ -12,7 +12,7 @@
                 <BuilderDough
                   :list="dough.list"
                   class="sheet__content"
-                  @doughChange="propertyChange(dough, $event)"
+                  @doughChange="$emit('doughChange', $event)"
                 />
               </div>
             </div>
@@ -23,7 +23,7 @@
                 <BuilderDiameter
                   :list="sizes.list"
                   class="sheet__content"
-                  @sizeChange="propertyChange(sizes, $event)"
+                  @sizeChange="$emit('sizeChange', $event)"
                 />
               </div>
             </div>
@@ -35,7 +35,7 @@
                   :sauces="sauces.list"
                   :ingredients="ingredients"
                   class="sheet__content"
-                  @sauceChange="propertyChange(sauces, $event)"
+                  @sauceChange="$emit('sauceChange', $event)"
                   @ingredientChange="ingredientChange"
                 />
               </div>
@@ -47,7 +47,8 @@
                 :placeholder="'Введите название пиццы'"
                 :name="'pizza_name'"
                 :type="'text'"
-                @input="nameChange"
+                :value="pizzaName"
+                @input="$emit('nameChange', $event)"
               />
               <div class="content__constructor">
                 <BuilderPizza
@@ -59,7 +60,7 @@
               </div>
 
               <div class="content__result">
-                <p>Итого: {{ priceTotal }} ₽</p>
+                <p>Итого: {{ price }} ₽</p>
                 <Button
                   :content="'Готовьте!'"
                   :disabled="!(this.hasIngredients && this.pizzaName)"
@@ -74,11 +75,6 @@
 </template>
 
 <script>
-import misc from "@/static/misc.json";
-import pizza from "@/static/pizza.json";
-import user from "@/static/user.json";
-import { types } from "@/common/constants";
-import { getType, createProperty, propertyChange } from "@/common/helpers";
 import AppLayout from "../layouts/AppLayout";
 import BuilderDough from "../modules/builder/components/BuilderDough";
 import BuilderDiameter from "../modules/builder/components/BuilderDiameter";
@@ -98,82 +94,39 @@ export default {
     Input,
     Button,
   },
-
-  data: () => {
-    const ingredients = pizza.ingredients;
-    ingredients.forEach((i) => {
-      i.count = i.count ? i.count : 0;
-      i.type = types.ingredients[i.id];
-    });
-    const dough = createProperty(pizza.dough, types.dough);
-    const sauces = createProperty(pizza.sauces, types.sauces);
-    const sizes = createProperty(pizza.sizes, types.sizes, 1);
-
-    return {
-      misc,
-      pizza,
-      user,
-      types,
-      dough,
-      sauces,
-      sizes,
-      ingredients,
-      hasIngredients: false,
-      pizzaName: "",
-    };
-  },
-  computed: {
-    priceTotal: function () {
-      const ingredients = this.ingredients.filter((i) => i.count > 0);
-      const dough = this.dough.selected.price;
-      const sauce = this.sauces.selected.price;
-      return (
-        (ingredients.reduce(
-          (partialSum, a) => partialSum + a.count * a.price,
-          0
-        ) +
-          dough +
-          sauce) *
-        this.sizes.selected.multiplier
-      );
+  props: {
+    ingredients: {
+      type: Array,
+      required: true,
     },
-    order() {
-      const { pizzaName, ingredients, priceTotal } = this;
-      const doughSelected = this.dough.selected;
-      const saucesSelected = this.sauces.selected;
-      const sizesSelected = this.sizes.selected;
-      const ingredientsSelected = ingredients
-        .map((i) => {
-          if (i.count > 0) {
-            return {
-              id: i.id,
-              count: i.count,
-            };
-          }
-        })
-        .filter((i) => !!i);
-      return {
-        dough: doughSelected.id,
-        sauce: saucesSelected.id,
-        size: sizesSelected.id,
-        ingredientsSelected,
-        pizzaName,
-        priceTotal,
-      };
+    dough: {
+      type: Object,
+      required: true,
+    },
+    sauces: {
+      type: Object,
+      required: true,
+    },
+    sizes: {
+      type: Object,
+      required: true,
+    },
+    price: {
+      type: Number,
+      default: 0,
+    },
+    hasIngredients: {
+      type: Boolean,
+      default: true,
+    },
+    pizzaName: {
+      type: String,
+      default: "",
     },
   },
   methods: {
-    getType,
-    propertyChange,
-
     ingredientChange(count, name) {
-      const item = this.ingredients.find((i) => i.id === name);
-      if (item) item.count = count;
-      this.hasIngredients = !!this.ingredients.find((i) => i.count > 0);
-    },
-
-    nameChange(event) {
-      this.pizzaName = event.target.value;
+      this.$emit("ingredientChange", count, name);
     },
   },
 };
