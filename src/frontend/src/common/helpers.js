@@ -25,6 +25,6 @@ export const createProperty = (list, types, selected) => {
 
 export const propertyChange = (obj, type) => {
   obj.list.forEach((item) => (item.selected = false));
-  obj.selected = this.list.find((item) => item.type === type);
+  obj.selected = obj.list.find((item) => item.type === type);
   obj.selected.selected = true;
 };

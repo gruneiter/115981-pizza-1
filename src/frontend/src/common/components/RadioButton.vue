@@ -24,7 +24,6 @@ export default {
     isChecked: {
       type: Boolean,
       default: false,
-      validator: (c) => typeof c === "boolean",
     },
   },
 };

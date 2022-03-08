@@ -4,6 +4,7 @@
     <input
       :type="type"
       :name="name"
+      :value="value"
       :placeholder="placeholder"
       @change="$emit('change', $event)"
       @input="$emit('input', $event)"
@@ -39,6 +40,10 @@ export default {
       type: String,
       default: "text",
       validator: (l) => l.length,
+    },
+    value: {
+      type: [String, Number],
+      default: "",
     },
   },
 };
