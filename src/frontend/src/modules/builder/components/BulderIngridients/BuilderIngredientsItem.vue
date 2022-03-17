@@ -9,7 +9,7 @@
     <ItemCounter
       class="ingredients__counter"
       :count="count"
-      @changeCount="$emit('ingredientChange', $event, id)"
+      @changeCount="changeIngredient"
     />
   </li>
 </template>
@@ -41,6 +41,14 @@ export default {
       default: 0,
     },
   },
-  methods: {},
+  methods: {
+    changeIngredient(e) {
+      const payload = {
+        count: e,
+        name: this.id,
+      };
+      this.$store.commit("Builder/changeIngredient", payload);
+    },
+  },
 };
 </script>

@@ -24,10 +24,9 @@
 <script>
 export default {
   name: "Header",
-  props: {
-    price: {
-      type: [Number, String],
-      default: 0,
+  computed: {
+    price: function () {
+      return this.$store.getters["Builder/getPriceTotal"];
     },
   },
 };

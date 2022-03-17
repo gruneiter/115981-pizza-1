@@ -1,13 +1,8 @@
 <template>
   <component
     :is="layout"
-    :price="price"
     :hasIngredients="hasIngredients"
     :pizzaName="pizzaName"
-    @doughChange="$emit('doughChange', $event)"
-    @sizeChange="$emit('sizeChange', $event)"
-    @sauceChange="$emit('sauceChange', $event)"
-    @ingredientChange="$emit('ingredientChange', $event)"
     @nameChange="$emit('nameChange', $event)"
   >
     <slot />
@@ -20,10 +15,6 @@ const defaultLayout = "AppLayoutMain";
 export default {
   name: "AppLayout",
   props: {
-    price: {
-      type: [Number, String],
-      default: 0,
-    },
     hasIngredients: {
       type: Boolean,
       default: true,

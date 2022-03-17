@@ -1,7 +1,5 @@
 import { maxIngredients, minIngredients } from "./constants";
 
-export const getType = (types, id) => types[id];
-
 export const changeCount = (count) => {
   let res;
   if (count > maxIngredients) res = maxIngredients;

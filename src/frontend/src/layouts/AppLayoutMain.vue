@@ -1,6 +1,6 @@
 <template>
   <div class="app-layout app-layout--main">
-    <Header :price="price" />
+    <Header />
     <slot />
   </div>
 </template>
@@ -11,12 +11,6 @@ export default {
   name: "AppLayoutMain",
   components: {
     Header,
-  },
-  props: {
-    price: {
-      type: [Number, String],
-      default: 0,
-    },
   },
 };
 </script>

@@ -23,34 +23,28 @@ export default {
   components: {
     AppDrop,
   },
-  props: {
-    dough: {
-      type: String,
-      default: "light",
-    },
-    sauce: {
-      type: String,
-      default: "tomato",
-    },
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-  },
   computed: {
     fillingList: function () {
-      return this.ingredients.filter((i) => i.count > 0);
+      return this.$store.state.Builder.ingredients.filter((i) => i.count > 0);
     },
     pizzaClassName: function () {
       const dough = this.dough === "large" ? "big" : "small";
       return `pizza--foundation--${dough}-${this.sauce}`;
     },
+    dough: function () {
+      return this.$store.state.Builder.dough.selected.type;
+    },
+    sauce: function () {
+      return this.$store.state.Builder.sauces.selected.type;
+    },
   },
   methods: {
     drop(e) {
-      const count = changeCount(e.count + 1);
-      const { id } = e;
-      this.$emit("ingredientChange", count, id);
+      const payload = {
+        count: changeCount(e.count + 1),
+        name: e.id,
+      };
+      this.$store.commit("Builder/changeIngredient", payload);
     },
     fillingClassName(count, type) {
       const variants = {
