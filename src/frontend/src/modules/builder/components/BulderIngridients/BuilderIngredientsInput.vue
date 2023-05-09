@@ -4,7 +4,7 @@
       :name="'sauce'"
       :value="value"
       :isChecked="isChecked"
-      @change="$emit('sauceChange', $event.target.value, value)"
+      @change="$store.commit('Builder/changeSauce', $event.target.value)"
     />
     <span>{{ name }}</span>
   </label>

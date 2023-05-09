@@ -1,6 +1,6 @@
 <template>
   <div class="app-layout app-layout--main">
-    <Header :price="price" />
+    <Header />
     <slot />
   </div>
 </template>
@@ -12,11 +12,12 @@ export default {
   components: {
     Header,
   },
-  props: {
-    price: {
-      type: [Number, String],
-      default: 0,
-    },
-  },
 };
 </script>
+<style scoped>
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+</style>

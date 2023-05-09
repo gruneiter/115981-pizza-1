@@ -1,12 +1,8 @@
-import { maxIngredients, minIngredients } from "./constants";
-
-export const getType = (types, id) => types[id];
-
-export const changeCount = (count) => {
+export const changeCount = (count, min, max) => {
   let res;
-  if (count > maxIngredients) res = maxIngredients;
-  else if (count > minIngredients) res = count;
-  else res = minIngredients;
+  if (count > max && max !== null) res = max;
+  else if (count > min) res = count;
+  else res = min;
   return res;
 };
 
@@ -28,3 +24,6 @@ export const propertyChange = (obj, type) => {
   obj.selected = obj.list.find((item) => item.type === type);
   obj.selected.selected = true;
 };
+
+export const priceFormat = (price) =>
+  price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");

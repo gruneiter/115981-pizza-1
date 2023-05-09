@@ -22,12 +22,12 @@
 </template>
 
 <script>
+import { priceFormat } from "../helpers";
 export default {
   name: "Header",
-  props: {
-    price: {
-      type: [Number, String],
-      default: 0,
+  computed: {
+    price: function () {
+      return priceFormat(this.$store.getters["Cart/getPriceTotal"]);
     },
   },
 };

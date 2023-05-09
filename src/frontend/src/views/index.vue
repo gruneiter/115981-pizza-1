@@ -7,35 +7,21 @@
         <div class="content__dough">
           <div class="sheet">
             <h2 class="sheet__title">Выберите тесто</h2>
-            <BuilderDough
-              :list="dough.list"
-              class="sheet__content"
-              @doughChange="$emit('doughChange', $event)"
-            />
+            <BuilderDough class="sheet__content" />
           </div>
         </div>
 
         <div class="content__diameter">
           <div class="sheet">
             <h2 class="sheet__title">Выберите размер</h2>
-            <BuilderDiameter
-              :list="sizes.list"
-              class="sheet__content"
-              @sizeChange="$emit('sizeChange', $event)"
-            />
+            <BuilderDiameter class="sheet__content" />
           </div>
         </div>
 
         <div class="content__ingredients">
           <div class="sheet">
             <h2 class="sheet__title">Выберите ингредиенты</h2>
-            <BuilderIngredients
-              :sauces="sauces.list"
-              :ingredients="ingredients"
-              class="sheet__content"
-              @sauceChange="$emit('sauceChange', $event)"
-              @ingredientChange="ingredientChange"
-            />
+            <BuilderIngredients class="sheet__content" />
           </div>
         </div>
         <div class="content__pizza">
@@ -46,15 +32,10 @@
             :name="'pizza_name'"
             :type="'text'"
             :value="pizzaName"
-            @input="$emit('nameChange', $event)"
+            @input="$store.commit('Builder/changeName', $event.target.value)"
           />
           <div class="content__constructor">
-            <BuilderPizza
-              :dough="dough.selected.type"
-              :sauce="sauces.selected.type"
-              :ingredients="ingredients"
-              @ingredientChange="ingredientChange"
-            />
+            <BuilderPizza />
           </div>
 
           <div class="content__result">
@@ -62,6 +43,7 @@
             <Button
               :content="'Готовьте!'"
               :disabled="!(this.hasIngredients && this.pizzaName)"
+              @click="submit()"
             />
           </div>
         </div>
@@ -88,39 +70,34 @@ export default {
     Input,
     Button,
   },
-  props: {
-    ingredients: {
-      type: Array,
-      required: true,
+  computed: {
+    pizzaName() {
+      return this.$store.state.Builder.pizzaName;
     },
-    dough: {
-      type: Object,
-      required: true,
+    price() {
+      return this.$store.getters["Builder/getPriceTotal"];
     },
-    sauces: {
-      type: Object,
-      required: true,
-    },
-    sizes: {
-      type: Object,
-      required: true,
-    },
-    price: {
-      type: Number,
-      default: 0,
-    },
-    hasIngredients: {
-      type: Boolean,
-      default: true,
-    },
-    pizzaName: {
-      type: String,
-      default: "",
+    hasIngredients() {
+      return this.$store.getters["Builder/hasIngredients"];
     },
   },
   methods: {
-    ingredientChange(count, name) {
-      this.$emit("ingredientChange", count, name);
+    submit() {
+      const isEdit = this.$store.getters["Builder/isEdit"];
+      if (!isEdit) this.addToCart();
+      else this.editProduct();
+      this.$store.commit("Builder/resetState");
+    },
+    addToCart() {
+      const order = this.$store.getters["Builder/pizza"];
+      this.$store.commit("Cart/addToCart", order);
+      this.$store.commit("Builder/resetState");
+    },
+    editProduct() {
+      const order = this.$store.getters["Builder/pizza"];
+      this.$store.commit("Cart/editProduct", order);
+      this.$store.commit("Builder/setEdit", false);
+      this.$router.push("/cart/");
     },
   },
 };

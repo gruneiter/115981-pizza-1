@@ -1,15 +1,16 @@
 <template>
-  <div class="counter counter--orange">
+  <div class="counter">
     <ItemCounterButton
       :type="`minus`"
-      @change="$emit('changeCount', changeCount(count - 1))"
-      :disabled="count <= minIngredients"
+      @change="$emit('changeCount', changeCount(count - 1, min, max))"
+      :disabled="count <= min"
     />
     <ItemCounterInput :count="count" />
     <ItemCounterButton
       :type="`plus`"
-      @change="$emit('changeCount', changeCount(count + 1))"
-      :disabled="count >= maxIngredients"
+      @change="$emit('changeCount', changeCount(count + 1, min, max))"
+      :disabled="max !== null && count >= max"
+      :color="color"
     />
   </div>
 </template>
@@ -27,6 +28,18 @@ export default {
     count: {
       type: Number,
       required: true,
+    },
+    min: {
+      type: Number,
+      default: minIngredients,
+    },
+    max: {
+      type: Number,
+      default: maxIngredients,
+    },
+    color: {
+      type: String,
+      default: "default",
     },
   },
   data: () => {

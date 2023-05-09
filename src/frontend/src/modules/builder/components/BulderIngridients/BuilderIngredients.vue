@@ -3,13 +3,12 @@
     <div class="ingredients__sauce">
       <p>Основной соус:</p>
       <BuilderIngredientsInput
-        v-for="s in sauces"
+        v-for="s in sauces.list"
         :key="s.id"
         class="ingredients__input"
         :isChecked="s.selected"
         :value="s.type"
         :name="s.name"
-        @sauceChange="$emit('sauceChange', $event)"
       />
     </div>
 
@@ -24,7 +23,6 @@
           :type="i.type"
           :name="i.name"
           :count="i.count"
-          @ingredientChange="ingredientChange"
         />
       </ul>
     </div>
@@ -32,7 +30,6 @@
 </template>
 
 <script>
-import { getType } from "../../../../common/helpers";
 import BuilderIngredientsItem from "./BuilderIngredientsItem";
 import BuilderIngredientsInput from "./BuilderIngredientsInput";
 export default {
@@ -41,20 +38,12 @@ export default {
     BuilderIngredientsItem,
     BuilderIngredientsInput,
   },
-  props: {
-    sauces: {
-      type: Array,
-      required: true,
+  computed: {
+    sauces: function () {
+      return this.$store.state.Builder.sauces;
     },
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-  },
-  methods: {
-    getType,
-    ingredientChange(count, name) {
-      this.$emit("ingredientChange", count, name);
+    ingredients: function () {
+      return this.$store.state.Builder.ingredients;
     },
   },
 };
