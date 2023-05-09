@@ -18,6 +18,7 @@
 <script>
 import AppDrop from "../../../common/components/AppDrop";
 import { changeCount } from "../../../common/helpers";
+import { minIngredients, maxIngredients } from "../../../common/constants";
 export default {
   name: "BuilderPizza",
   components: {
@@ -41,7 +42,7 @@ export default {
   methods: {
     drop(e) {
       const payload = {
-        count: changeCount(e.count + 1),
+        count: changeCount(e.count + 1, minIngredients, maxIngredients),
         name: e.id,
       };
       this.$store.commit("Builder/changeIngredient", payload);

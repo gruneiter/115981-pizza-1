@@ -1,11 +1,12 @@
 <template>
-  <label class="input">
+  <label :class="`input${labelBig ? ' input--big-label' : ''}`">
     <span :class="`${labelHidden ? 'visually-hidden' : ''}`">{{ label }}</span>
     <input
       :type="type"
       :name="name"
       :value="value"
       :placeholder="placeholder"
+      :required="required"
       @change="$emit('change', $event)"
       @input="$emit('input', $event)"
       @focus="$emit('focus', $event)"
@@ -27,6 +28,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    labelBig: {
+      type: Boolean,
+      default: false,
+    },
     placeholder: {
       type: String,
       default: "",
@@ -44,6 +49,10 @@ export default {
     value: {
       type: [String, Number],
       default: "",
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
 };

@@ -5,11 +5,11 @@ import { createProperty, propertyChange } from "@/common/helpers";
 function setState() {
   const ingredients = pizza.ingredients;
   ingredients.forEach((i) => {
-    i.count = i.count ? i.count : 0;
+    i.count = 0;
     i.type = types.ingredients[i.id];
   });
-  const dough = createProperty(pizza.dough, types.dough);
-  const sauces = createProperty(pizza.sauces, types.sauces);
+  const dough = createProperty(pizza.dough, types.dough, 0);
+  const sauces = createProperty(pizza.sauces, types.sauces, 0);
   const sizes = createProperty(pizza.sizes, types.sizes, 1);
   return {
     ingredients,
@@ -17,6 +17,7 @@ function setState() {
     sauces,
     sizes,
     pizzaName: "",
+    editing: false,
   };
 }
 
@@ -41,9 +42,9 @@ export default {
         state.sizes.selected.multiplier
       );
     },
-    order(state, getters) {
+    pizza(state, getters) {
       const { pizzaName, ingredients } = state;
-      const priceTotal = getters["getPriceTotal"];
+      const price = getters["getPriceTotal"];
       const doughSelected = state.dough.selected;
       const saucesSelected = state.sauces.selected;
       const sizesSelected = state.sizes.selected;
@@ -53,36 +54,47 @@ export default {
             return {
               id: i.id,
               count: i.count,
+              name: i.name,
             };
           }
         })
         .filter((i) => !!i);
       return {
-        dough: doughSelected.id,
-        sauce: saucesSelected.id,
-        size: sizesSelected.id,
+        dough: doughSelected,
+        sauce: saucesSelected,
+        size: sizesSelected,
         ingredientsSelected,
-        pizzaName,
-        priceTotal,
+        name: pizzaName,
+        price,
+        count: 1,
       };
+    },
+    isEdit(state) {
+      return state.editing;
     },
   },
   mutations: {
-    changeDough: function (state, payload) {
+    resetState(state) {
+      Object.assign(state, setState());
+    },
+    changeDough(state, payload) {
       propertyChange(state.dough, payload);
     },
-    changeSauce: function (state, payload) {
+    changeSauce(state, payload) {
       propertyChange(state.sauces, payload);
     },
-    changeSize: function (state, payload) {
+    changeSize(state, payload) {
       propertyChange(state.sizes, payload);
     },
-    changeIngredient: function (state, payload) {
+    changeIngredient(state, payload) {
       const item = state.ingredients.find((i) => i.id === payload.name);
       if (item) item.count = payload.count;
     },
-    changeName: function (state, payload) {
+    changeName(state, payload) {
       state.pizzaName = payload;
+    },
+    setEdit(state, status) {
+      state.editing = status;
     },
   },
 };

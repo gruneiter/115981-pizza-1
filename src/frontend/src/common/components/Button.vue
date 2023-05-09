@@ -1,5 +1,11 @@
 <template>
-  <component :is="tag" :type="type" :class="className" :disabled="isDisabled">
+  <component
+    :is="tag"
+    :type="type"
+    :class="className"
+    :disabled="isDisabled"
+    @click="click()"
+  >
     {{ content }}
   </component>
 </template>
@@ -37,6 +43,11 @@ export default {
     },
     type() {
       return this.tag === "button" ? "button" : false;
+    },
+  },
+  methods: {
+    click() {
+      this.$emit("click");
     },
   },
 };

@@ -43,6 +43,7 @@
             <Button
               :content="'Готовьте!'"
               :disabled="!(this.hasIngredients && this.pizzaName)"
+              @click="submit()"
             />
           </div>
         </div>
@@ -78,6 +79,25 @@ export default {
     },
     hasIngredients() {
       return this.$store.getters["Builder/hasIngredients"];
+    },
+  },
+  methods: {
+    submit() {
+      const isEdit = this.$store.getters["Builder/isEdit"];
+      if (!isEdit) this.addToCart();
+      else this.editProduct();
+      this.$store.commit("Builder/resetState");
+    },
+    addToCart() {
+      const order = this.$store.getters["Builder/pizza"];
+      this.$store.commit("Cart/addToCart", order);
+      this.$store.commit("Builder/resetState");
+    },
+    editProduct() {
+      const order = this.$store.getters["Builder/pizza"];
+      this.$store.commit("Cart/editProduct", order);
+      this.$store.commit("Builder/setEdit", false);
+      this.$router.push("/cart/");
     },
   },
 };

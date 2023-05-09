@@ -22,11 +22,12 @@
 </template>
 
 <script>
+import { priceFormat } from "../helpers";
 export default {
   name: "Header",
   computed: {
     price: function () {
-      return this.$store.getters["Builder/getPriceTotal"];
+      return priceFormat(this.$store.getters["Cart/getPriceTotal"]);
     },
   },
 };
